@@ -1,0 +1,120 @@
+// واجهة أولية لتصميم منصة "السلطة الإعلامية الذكية" مع نظام النقد والدفاع التفاعلي
+
+import { useState } from 'react';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { ThumbsUp, Repeat, ArrowBigDownDash } from "lucide-react";
+
+export default function SmartMediaPlatform() {
+  const [chat, setChat] = useState([
+    { id: 1, text: "علينا احترام جميع الآراء.", sender: "Ali" },
+    { id: 2, text: "لكن هذا الرأي فيه تحامل واضح.", sender: "Sami" },
+  ]);
+
+  const [critique, setCritique] = useState([]);
+  const [defense, setDefense] = useState([]);
+  const [searchGoal, setSearchGoal] = useState("");
+  const [userInfo, setUserInfo] = useState({ name: "فادي جوباسية", timeSpent: "00:47:22" });
+  const [showSidebar, setShowSidebar] = useState(false);
+
+  const addToCritique = (msg) => setCritique([...critique, msg]);
+  const addToDefense = (msg) => setDefense([...defense, msg]);
+
+  const renderGPTJudgment = () => {
+    if (critique.length === 0 && defense.length === 0) return "لا يوجد رسائل لتحليلها.";
+    return `GPT يقول: الرسائل المعروضة تُظهر خلافًا في النبرة. يرجى مراعاة احترام الطرفين. هذا التقييم غير ملزم قانونيًا.`;
+  };
+
+  const handleSearch = () => {
+    alert(`جاري البحث عن مستخدمين يشاركونك طموح: '${searchGoal}'... سيتم توجيهك إلى الغرفة المناسبة.`);
+  };
+
+  return (
+    <div className="bg-black text-white min-h-screen p-6">
+      {/* 🔁 شريط الإعلانات المتحرك التجاري - حي */}
+      <div className="overflow-hidden whitespace-nowrap">
+        <div className="animate-marquee bg-yellow-400 text-black text-sm py-1 px-4 font-bold inline-block">
+          🟡 إعلان: جربوا الآن خدمة XYZ 🔥 | 🟡 وفروا 30% مع شركة ABC 💼 | 🟡 راقب الحقيقة مع Smart Media! 🧠 🟡 إعلان: جربوا الآن خدمة XYZ 🔥 | 🟡 وفروا 30% مع شركة ABC 💼 | 🟡 راقب الحقيقة مع Smart Media! 🧠
+        </div>
+      </div>
+
+      {/* 🔍 شريط البحث عن الطموح */}
+      <div className="bg-gray-800 text-white text-sm px-4 py-2 flex items-center gap-2 mt-1 rounded-md">
+        <span className="text-yellow-300 font-semibold">شاركني طموحي:</span>
+        <Input
+          className="bg-gray-700 text-white border border-gray-600 h-8"
+          placeholder="مثلاً: عدالة رقمية، تطوير إعلامي، مجتمع ناقد"
+          value={searchGoal}
+          onChange={(e) => setSearchGoal(e.target.value)}
+        />
+        <Button onClick={handleSearch} size="sm" variant="secondary">بحث</Button>
+      </div>
+
+      {/* رسالة في منتصف الشاشة بشكل ختم دائري */}
+      <div className="flex justify-center my-6">
+        <div className="rounded-full border border-yellow-500 text-yellow-400 px-6 py-2 text-sm font-semibold bg-gray-800 shadow-md">
+          🟡 علينا احترام جميع الآراء.
+        </div>
+      </div>
+
+      <div className="flex justify-between items-center mt-4 mb-2">
+        <Button onClick={() => setShowSidebar(!showSidebar)} variant="outline">
+          📂 القائمة
+        </Button>
+      </div>
+
+      {/* القائمة الجانبية */}
+      {showSidebar && (
+        <div className="bg-gray-900 p-4 rounded-xl mb-4">
+          <div className="text-center">
+            <div className="w-20 h-20 rounded-full bg-white mx-auto mb-2" />
+            <h3 className="text-lg font-bold">{userInfo.name}</h3>
+            <p className="text-xs text-gray-400">⏱️ الوقت داخل المنصة: {userInfo.timeSpent}</p>
+          </div>
+        </div>
+      )}
+
+      {/* واجهة الدردشة + النقد والدفاع */}
+      <div className="grid grid-cols-2 gap-4">
+        <Card>
+          <CardContent>
+            <h2 className="text-red-500 font-bold mb-2">🟥 النقد</h2>
+            {critique.map((msg) => (
+              <p key={msg.id} className="text-sm mb-1">{msg.text}</p>
+            ))}
+          </CardContent>
+        </Card>
+
+        <Card className="bg-green-900">
+          <CardContent>
+            <h2 className="text-green-300 font-bold mb-2">🟩 الدفاع</h2>
+            {defense.map((msg) => (
+              <p key={msg.id} className="text-sm mb-1">{msg.text}</p>
+            ))}
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* 💬 دردشة رئيسية بمثال حي مع الرموز */}
+      <div className="mt-6 bg-gray-900 p-4 rounded-xl">
+        <h3 className="text-yellow-300 font-bold mb-3">💬 مثال حواري:</h3>
+        <div className="bg-gray-800 p-3 rounded-md">
+          <p className="text-sm mb-2">Ali: الإعلام يجب أن يُدار بمهنية مطلقة.</p>
+          <div className="flex gap-3 text-gray-400 text-xs items-center">
+            <ThumbsUp size={16} />
+            <Repeat size={16} />
+            <ArrowBigDownDash size={16} />
+          </div>
+        </div>
+      </div>
+
+      {/* ⚖️ تحليل GPT */}
+      <div className="mt-6 bg-gray-900 p-4 rounded-xl">
+        <h3 className="text-yellow-300 font-bold mb-2">⚖️ حكم GPT:</h3>
+        <p>{renderGPTJudgment()}</p>
+        <p className="text-xs mt-2 text-gray-400">🔒 التقييم صادر عن نموذج مساعد ولا يُستخدم كأساس قانوني.</p>
+      </div>
+    </div>
+  );
+}
